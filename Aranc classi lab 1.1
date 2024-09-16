@@ -1,0 +1,39 @@
+#include <iostream>
+#include <cstdlib> 
+#include <ctime>  
+using namespace std;
+
+int main() {
+    srand(time(0)); 
+    int size = rand() % 6 + 5; 
+    int n[size];
+    for (int i = 0; i < size; ++i) {
+        n[i] = rand() % 20 + 1;
+    }
+    int m = rand() % 21 + 10;
+    cout << "Random array: ";
+    for (int i = 0; i < size; ++i) {
+        cout << n[i] << " ";
+    }
+    cout << endl;
+    cout << "M: " << m << endl;
+
+    bool found = false;
+    for (int i = 0; i < size; ++i) {
+        for (int j = i + 1; j < size; ++j) {
+            if (n[i] + n[j] == m) {
+                cout << "Index: " << i << ", " << j << endl;
+                found = true;
+                break; 
+            }
+        }
+        if (found) break;
+    }
+
+    if (!found) {
+        cout << "No pair found." << endl;
+    }
+
+    return 0;
+}
+
