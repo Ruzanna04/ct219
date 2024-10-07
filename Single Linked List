@@ -1,0 +1,108 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;   
+    Node* next; 
+
+    Node(int value) 
+    {
+        data = value;
+        next = NULL;
+    }
+};
+
+class LinkedList {
+private:
+    Node* head; 
+
+public:
+    
+   LinkedList() 
+   {
+        head = NULL;
+    }
+    
+
+void append(int value) {
+        Node* newNode = new Node(value); 
+        if (head ==  NULL) {
+            head = newNode;
+            return;
+        }
+
+        Node* temp = head;
+        while (temp->next !=  NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+
+void print() {
+        if (head == NULL) {
+            cout << "The list is empty." << endl;
+            return;
+        }
+
+        Node* temp = head;
+        while (temp != NULL) {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout  <<"NULL"<< endl; 
+    }
+
+    
+Node* getHead()  {
+        return head;
+    }
+
+static LinkedList addLists(LinkedList& list1, LinkedList& list2) {
+        LinkedList resultList;  
+        Node* temp1 = list1.getHead();
+        Node* temp2 = list2.getHead();
+
+        int carry = 0;  
+        while (temp1 != NULL || temp2 != NULL || carry > 0) {
+            int sum = carry;  
+            if (temp1 != NULL) {
+                sum += temp1->data;
+                temp1 = temp1->next;
+            }
+            if (temp2 != NULL) {
+                sum += temp2->data;
+                temp2 = temp2->next;
+            }
+            carry = sum / 10;
+            resultList.append(sum % 10);
+        }
+
+        return resultList;
+    }
+};
+
+int main() {
+    LinkedList list1;
+    list1.append(9);
+    list1.append(4);
+    list1.append(3);
+
+    LinkedList list2;
+    list2.append(5);
+    list2.append(6);
+    list2.append(7);
+    
+    cout << "Arajin List: ";
+    list1.print();
+
+    cout << "Erkrord List: ";
+    list2.print();
+
+    LinkedList resultList = LinkedList::addLists(list1, list2);
+
+    cout << "Result: ";
+    resultList.print();
+
+    return 0;
+}
