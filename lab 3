@@ -1,48 +1,69 @@
-#include <iostream>
-#include <vector>
-#include <cassert>
-using namespace std;
+#include <iostream> 
+#include <algorithm>
+#include <vector> 
+#include <cassert> 
+#include <cstdlib>   
+#include <ctime>      
+ 
+using namespace std; 
+ 
+class Solution { 
+public: 
+    int removeDuplicates(vector<int>& nums) { 
+        if (nums.size() == 0) return 0; 
+         
+        int k = 1;  
+        for (int i = 1; i < nums.size(); i++) { 
+            if (nums[i] != nums[k - 1]) { 
+                nums[k] = nums[i]; 
+                k++; 
+            } 
+        } 
+        return k; 
+    } 
+}; 
+ 
+int main() { 
+    Solution solution; 
+ 
+  
+    const int size = 8;  
+    vector<int> nums(size); 
+    srand(static_cast<unsigned int>(time(0)));  
+    for (int i = 0; i < size; i++) { 
+        nums[i] = rand() % 10;  
+    } 
+ 
+    cout << "Original vector: "; 
+    for (int num : nums) { 
+        cout << num << " "; 
+    } 
+    cout << endl; 
 
-class Solution {
-public:
-    //krknorinaknery heracnelu gorcaruyt
-    int removeDuplicates(vector<int>& nums) {
-        if (nums.size() == 0) return 0;
-        
-      //stugum enq ardyoq kan krknvox tarrer
-        int k = 1;
-        for (int i = 1; i < nums.size(); i++) {
-            if (nums[i] != nums[k - 1]) {
-                nums[k] = nums[i];
-                k++;
-            }
-        }
-        return k;
-    }
-};
-
-int main() {
-    Solution solution;
-
-    vector<int> nums = {0,0,1,1,1,2,2,3,3,4};
-    vector<int> expectedNums = {0,1,2,3,4}; 
-
-   //ezaki tarreri qanak
-    int k = solution.removeDuplicates(nums);
-
-    //arjeqnery ev chapery chisht en?
-    assert(k == expectedNums.size());
-    for (int i = 0; i < k; i++) {
-        assert(nums[i] == expectedNums[i]);
-    }
-
-
-    cout << "Unique elements: " << k << endl;
-    cout << "Array after duplicates removed: ";
-    for (int i = 0; i < k; i++) {
-        cout << nums[i] << " ";
-    }
-    cout << endl;
-
-    return 0;
+sort(nums.begin(),nums.end());
+ 
+    
+vector<int> uniqueNums; 
+    int k = solution.removeDuplicates(nums); 
+    for (int i = 0; i < k; i++) { 
+        uniqueNums.push_back(nums[i]); 
+    } 
+     
+     
+    assert(k <= size);  
+    for (int i = 0; i < k; i++) { 
+        assert(uniqueNums[i] >= 0 && uniqueNums[i] <= 9);  
+        if (i > 0) { 
+            assert(uniqueNums[i] != uniqueNums[i - 1]);  
+        } 
+    } 
+ 
+    cout << "Unique elements: " << k << endl; 
+    cout << "Array after duplicates removed: "; 
+    for (int i = 0; i < k; i++) { 
+        cout << uniqueNums[i] << " "; 
+    } 
+    cout << endl; 
+ 
+    return 0; 
 }
