@@ -1,0 +1,28 @@
+str= "()"
+char = 'a'
+
+def stugum(str, char):
+    my_stack = []
+    brackets = {')': '(', ']': '[', '}': '{'}
+    result = []  
+
+    for i in str:
+        if i in brackets.values():  
+            my_stack.append(i)
+            result.append(i)
+            result.append(char)
+        elif i in brackets.keys():  
+            if not my_stack or my_stack.pop() != brackets[i]:  
+                return '', False 
+            result.append(i)
+
+    if my_stack:  
+        return '', False  
+        
+    return ''.join(result), True  
+
+result, is_balanced = stugum(str, char)
+
+if result:
+    print(result)
+print(is_balanced)  
