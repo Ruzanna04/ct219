@@ -1,62 +1,36 @@
-class Node:
-    def __init__(self, key, value):
-        self.key = key
-        self.value = value
-        self.next = None
-
 class HashTable:
     def __init__(self, size):
         self.size = size
-        self.hash_table = [None] * size  # Initialize with None for each bucket
+        self.hash_table = [[] for _ in range(self.size)]
 
     def set_value(self, key, value):
         hashed_key = hash(key) % self.size
-        # If bucket is empty, insert new node
-        if self.hash_table[hashed_key] is None:
-            self.hash_table[hashed_key] = Node(key, value)
-        else:
-            # Traverse the linked list in the bucket
-            current = self.hash_table[hashed_key]
-            while current:
-                if current.key == key:
-                    current.value = value  # Update value if key exists
-                    return
-                if current.next is None:  # Insert at end if key not found
-                    break
-                current = current.next
-            current.next = Node(key, value)  # Append new node at end
+        bucket = self.hash_table[hashed_key]
+        for index, (k, v) in enumerate(bucket):
+            if k == key:
+                bucket[index] = (key, value)  # Update existing value if key exists
+                return
+        bucket.append((key, value))  # Append new key-value pair
 
     def get_value(self, key):
         hashed_key = hash(key) % self.size
-        current = self.hash_table[hashed_key]
-        while current:
-            if current.key == key:
-                return current.value  # Return value if key is found
-            current = current.next
+        bucket = self.hash_table[hashed_key]
+        for k, v in bucket:
+            if k == key:
+                return v  # Return value if key is found
         return None  # Return None if key not found
 
     def __str__(self):
-        result = []
-        for i, bucket in enumerate(self.hash_table):
-            chain = []
-            current = bucket
-            while current:
-                chain.append(f"({current.key}: {current.value})")
-                current = current.next
-            result.append(f"Bucket {i}: {' -> '.join(chain) if chain else 'Empty'}")
-        return "\n".join(result)
+        return str(self.hash_table)
 
-# Usage example
 hashtable = HashTable(5)
 
 while True:
-    key = input("key: ")
-    if key == 'exit':
+    key = input("Key (or 'exit' to finish): ")
+    if key.lower() == 'exit':
         break
-    value = input("value: ")
-    hashtable.set_value(key, value)
 
-    if any(hashtable.hash_table):
-        print("Hashtable:")
-        print(hashtable)
-        break
+    value = input("Value: ")
+    hashtable.set_value(key, value)
+    print("Hashtable after insertion:")
+    print(hashtable)
